@@ -46,6 +46,9 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
     
     // Cache de rutinas cargadas
     private var cachedRoutines: MutableMap<String, GymRoutineWithDays> = mutableMapOf()
+    
+    // Cache de estados de completion por rutina y día: "routineId_dayIndex" -> Map<exerciseId, List<Boolean>>
+    private val completionStateCache = mutableMapOf<String, Map<String, List<Boolean>>>()
 
     init {
         loadRoutines()
@@ -99,16 +102,29 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
         val dayWithExercises = routine.days[_currentDayIndex.value]
         
         // Convertir entidades a modelos de UI
+        val exercises = dayWithExercises.exercises.map { entity ->
+            GymExercise(
+                name = entity.name,
+                sets = entity.sets,
+                baseReps = entity.baseReps,
+                restSeconds = entity.restSeconds
+                // id se genera automáticamente a partir del nombre
+            )
+        }
+        
+        // Crear key única para este día específico de esta rutina
+        val cacheKey = "${_currentRoutineId.value}_${_currentDayIndex.value}"
+        
+        // Restaurar estado desde el cache global, o inicializar con false
+        val cachedCompletion = completionStateCache[cacheKey] ?: emptyMap()
+        val newCompletionState = exercises.associate { exercise ->
+            exercise.id to (cachedCompletion[exercise.id] ?: List(exercise.sets) { false })
+        }
+        
         _currentDay.value = GymDay(
             title = dayWithExercises.day.title,
-            exercises = dayWithExercises.exercises.map { entity ->
-                GymExercise(
-                    name = entity.name,
-                    sets = entity.sets,
-                    baseReps = entity.baseReps,
-                    restSeconds = entity.restSeconds
-                )
-            }
+            exercises = exercises,
+            completionState = newCompletionState
         )
     }
 
@@ -138,22 +154,36 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
     fun toggleSet(exerciseIndex: Int, setIndex: Int) {
         val currentDayData = _currentDay.value ?: return
         val exercise = currentDayData.exercises[exerciseIndex]
+        val exerciseId = exercise.id
+        
+        val currentCompletion = currentDayData.completionState[exerciseId] ?: return
         
         // Verificar si el set anterior está completado (locking secuencial)
         if (setIndex > 0) {
-            val previousCompleted = exercise.isCompleted.value.getOrElse(setIndex - 1) { false }
+            val previousCompleted = currentCompletion.getOrElse(setIndex - 1) { false }
             if (!previousCompleted) {
                 return // No permitir marcar si el anterior no está completo
             }
         }
         
-        val newCompletionState = exercise.isCompleted.value.toMutableList()
-        newCompletionState[setIndex] = !newCompletionState[setIndex]
-
-        exercise.isCompleted.value = newCompletionState
+        // Crear nuevo estado inmutable
+        val newSetCompletions = currentCompletion.toMutableList()
+        newSetCompletions[setIndex] = !newSetCompletions[setIndex]
+        
+        // Actualizar el estado completo de manera inmutable
+        val newCompletionState = currentDayData.completionState.toMutableMap()
+        newCompletionState[exerciseId] = newSetCompletions
+        
+        _currentDay.value = currentDayData.copy(
+            completionState = newCompletionState
+        )
+        
+        // Guardar en el cache global para persistencia
+        val cacheKey = "${_currentRoutineId.value}_${_currentDayIndex.value}"
+        completionStateCache[cacheKey] = newCompletionState
 
         // Si se completó (se marcó true), iniciamos el descanso automáticamente
-        if (newCompletionState[setIndex]) {
+        if (newSetCompletions[setIndex]) {
             startRestTimer(exercise.restSeconds)
         }
     }
@@ -162,9 +192,18 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
     fun resetCurrentDay() {
         val currentDayData = _currentDay.value ?: return
         
-        currentDayData.exercises.forEach { exercise ->
-            exercise.isCompleted.value = List(exercise.sets) { false }
+        // Reiniciar todos los estados a false de manera inmutable
+        val resetCompletionState = currentDayData.exercises.associate { exercise ->
+            exercise.id to List(exercise.sets) { false }
         }
+        
+        _currentDay.value = currentDayData.copy(
+            completionState = resetCompletionState
+        )
+        
+        // También limpiar del cache global
+        val cacheKey = "${_currentRoutineId.value}_${_currentDayIndex.value}"
+        completionStateCache[cacheKey] = resetCompletionState
         
         cancelRestTimer() // También cancelamos el timer de descanso
     }

@@ -1,0 +1,166 @@
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateDebugResValues
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:checkDebugAarMetadata
+> Task :app:packageDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:mergeDebugResources
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeDebugNativeLibs
+> Task :app:validateSigningDebug
+> Task :app:checkDebugDuplicateClasses
+> Task :app:writeDebugAppMetadata
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+
+> Task :app:mergeLibDexDebug
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :app:kspDebugKotlin
+
+> Task :app:compileDebugKotlin FAILED
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:13:60 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:13:66 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:14:50 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:14:56 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:15:59 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:15:65 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:16:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:16:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:17:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:17:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:18:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:18:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:19:62 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:19:68 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:22:56 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:22:62 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:23:64 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:23:70 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:24:59 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:24:66 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:25:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:25:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:26:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:26:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:27:63 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:27:70 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:31:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:31:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:32:66 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:32:72 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:33:56 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:33:62 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:34:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:34:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:35:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:35:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:36:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:36:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:37:65 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:37:71 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:40:69 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:40:75 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:41:69 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:41:75 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:42:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:42:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:43:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:43:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:44:64 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:44:70 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:54:60 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:54:66 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:55:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:55:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:56:64 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:56:70 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:57:56 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:57:62 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:58:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:58:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:59:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:59:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:62:50 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:62:56 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:63:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:63:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:64:66 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:64:72 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:65:46 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:65:52 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:66:62 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:66:68 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:67:64 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:67:71 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:70:56 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:70:62 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:71:64 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:71:70 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:72:59 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:72:66 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:73:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:73:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:74:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:74:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:75:63 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:75:70 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:78:57 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:78:63 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:79:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:79:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:80:62 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:80:68 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:81:71 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:81:77 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:82:72 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:82:78 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:83:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:83:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:86:61 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:86:67 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:87:65 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:87:71 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:88:60 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:88:66 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:89:75 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:89:81 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:90:65 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:90:71 No value passed for parameter 'baseReps'.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:91:71 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.String' was expected.
+e: file:///E:/NetBeansProjects/FitSuperApp/app/src/main/java/com/example/fitsuperapp/DataRepository.kt:91:77 No value passed for parameter 'baseReps'.
+
+> Task :app:mergeExtDexDebug
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 17s
+29 actionable tasks: 29 executed

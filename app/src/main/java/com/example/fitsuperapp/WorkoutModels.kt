@@ -6,14 +6,15 @@ data class GymExercise(
     val name: String,
     val sets: Int,
     val baseReps: Int,
-    var currentReps: Int = baseReps, // Para la sobrecarga progresiva que tenías en JS
+    var currentReps: Int = baseReps, // Para la sobrecarga progresiva
     val restSeconds: Int,
-    var isCompleted: androidx.compose.runtime.MutableState<List<Boolean>> = androidx.compose.runtime.mutableStateOf(List(sets) { false }) // Estado observable
+    val id: String = name.hashCode().toString() // ID único para keys en LazyColumn, auto-generado si no se proporciona
 )
 
 data class GymDay(
     val title: String, // Ej: "Día 1: Torso - Fuerza"
-    val exercises: List<GymExercise>
+    val exercises: List<GymExercise>,
+    val completionState: Map<String, List<Boolean>> = emptyMap() // ID del ejercicio -> estado de completado
 )
 
 data class GymRoutine(

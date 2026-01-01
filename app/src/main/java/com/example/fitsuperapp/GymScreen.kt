@@ -213,9 +213,14 @@ fun GymScreen(
                     }
                 }
             } else {
-                itemsIndexed(exercises) { index, exercise ->
+                itemsIndexed(
+                    items = exercises,
+                    key = { _, exercise -> exercise.id } 
+                ) { index, exercise ->
+                    val completionState = currentDay?.completionState?.get(exercise.id) ?: List(exercise.sets) { false }
                     ExerciseCard(
                         exercise = exercise,
+                        completionState = completionState,
                         onSetCheck = { setIndex -> viewModel.toggleSet(index, setIndex) }
                     )
                 }
@@ -227,6 +232,7 @@ fun GymScreen(
 @Composable
 fun ExerciseCard(
     exercise: GymExercise,
+    completionState: List<Boolean>,
     onSetCheck: (Int) -> Unit
 ) {
     Card(
@@ -285,13 +291,11 @@ fun ExerciseCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                val completionStates = exercise.isCompleted.value
-                
                 repeat(exercise.sets) { setIndex ->
-                    val isCompleted = completionStates.getOrElse(setIndex) { false }
+                    val isCompleted = completionState.getOrElse(setIndex) { false }
                     
                     val isLocked = if (setIndex > 0) {
-                        !completionStates.getOrElse(setIndex - 1) { false }
+                        !completionState.getOrElse(setIndex - 1) { false }
                     } else {
                         false
                     }
