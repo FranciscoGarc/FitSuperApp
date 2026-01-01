@@ -105,3 +105,16 @@ data class HiitRoutineWithSteps(
     val routine: HiitRoutineEntity,
     val steps: List<HiitStepEntity>
 )
+
+// --- ENTIDADES PARA PROGRESO ---
+
+@Entity(tableName = "workout_sessions")
+data class WorkoutSessionEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val type: String, // "GYM", "HIIT"
+    val routineName: String,
+    val startTime: Long, // Timestamp en milisegundos
+    val endTime: Long,   // Timestamp en milisegundos
+    val durationSeconds: Long
+)

@@ -29,7 +29,6 @@ private val CardBg = Color(0xFF1F2937)
 private val AccentCyan = Color(0xFF22d3ee)
 private val TextGray = Color(0xFF9CA3AF)
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HiitSelectionScreen(
     routines: List<HiitRoutineEntity>,
@@ -38,29 +37,36 @@ fun HiitSelectionScreen(
     onBack: () -> Unit
 ) {
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Seleccionar Rutina HIIT") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Volver")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBg,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
-                )
-            )
-        },
         containerColor = DarkBg
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp)
+                .statusBarsPadding()
+                .padding(bottom = padding.calculateBottomPadding())
         ) {
+            // Header - Row simple sin padding extra
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onBack) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Volver", tint = Color.White)
+                }
+                Text(
+                    text = "Seleccionar Rutina HIIT",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            ) {
             // Header
             Text(
                 text = "¿Qué rutina quieres hacer hoy?",
@@ -118,6 +124,7 @@ fun HiitSelectionScreen(
             }
         }
     }
+}
 }
 
 @Composable

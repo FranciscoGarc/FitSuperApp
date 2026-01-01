@@ -142,3 +142,20 @@ interface HiitStepDao {
     suspend fun deleteAllSteps()
 }
 
+// --- DAO PARA PROGRESO ---
+
+@Dao
+interface WorkoutSessionDao {
+    @Query("SELECT * FROM workout_sessions ORDER BY startTime DESC")
+    fun getAllSessions(): Flow<List<WorkoutSessionEntity>>
+
+    @Query("SELECT * FROM workout_sessions WHERE startTime BETWEEN :start AND :end ORDER BY startTime DESC")
+    fun getSessionsInDateRange(start: Long, end: Long): Flow<List<WorkoutSessionEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSession(session: WorkoutSessionEntity): Long
+
+    @Delete
+    suspend fun deleteSession(session: WorkoutSessionEntity)
+}
+

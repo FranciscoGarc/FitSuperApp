@@ -70,44 +70,48 @@ fun ManageDataScreen(
     }
     
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { 
-                    Text(
-                        when {
-                            uiState.selectedDay != null -> "Editar Día"
-                            uiState.selectedRoutine != null -> "Editar Rutina"
-                            uiState.selectedHiitRoutine != null -> "Editar Rutina HIIT"
-                            else -> "Gestionar Datos"
-                        }
-                    ) 
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        when {
-                            uiState.selectedDay != null -> viewModel.clearSelectedDay()
-                            uiState.selectedRoutine != null -> viewModel.clearSelectedRoutine()
-                            uiState.selectedHiitRoutine != null -> viewModel.clearSelectedHiitRoutine()
-                            else -> onExit()
-                        }
-                    }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Volver")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBg,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
-                )
-            )
-        },
         containerColor = DarkBg
     ) { padding ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .statusBarsPadding()
+                .padding(bottom = padding.calculateBottomPadding())
         ) {
+            // Header - Row simple sin padding extra
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = {
+                    when {
+                        uiState.selectedDay != null -> viewModel.clearSelectedDay()
+                        uiState.selectedRoutine != null -> viewModel.clearSelectedRoutine()
+                        uiState.selectedHiitRoutine != null -> viewModel.clearSelectedHiitRoutine()
+                        else -> onExit()
+                    }
+                }) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Volver", tint = Color.White)
+                }
+                Text(
+                    text = when {
+                        uiState.selectedDay != null -> "Editar Día"
+                        uiState.selectedRoutine != null -> "Editar Rutina"
+                        uiState.selectedHiitRoutine != null -> "Editar Rutina HIIT"
+                        else -> "Gestionar Datos"
+                    },
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            ) {
             when {
                 uiState.isLoading -> {
                     CircularProgressIndicator(
@@ -207,7 +211,6 @@ fun ManageDataScreen(
                 ) {
                     Text(message, color = Color.White)
                 }
-            }
         }
     }
     
@@ -262,6 +265,8 @@ fun ManageDataScreen(
         )
     }
 }
+}
+}
 
 @Composable
 private fun MainManageContent(
@@ -276,8 +281,7 @@ private fun MainManageContent(
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Sección de rutinas de gym
@@ -407,8 +411,7 @@ private fun RoutineEditContent(
     
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Nombre de la rutina editable
@@ -530,8 +533,7 @@ private fun DayEditContent(
     
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Título del día editable
@@ -1107,8 +1109,7 @@ private fun HiitRoutineEditContent(
     
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Header con acciones

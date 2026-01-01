@@ -16,9 +16,10 @@ import kotlinx.coroutines.launch
         GymDayEntity::class,
         GymExerciseEntity::class,
         HiitRoutineEntity::class,
-        HiitStepEntity::class
+        HiitStepEntity::class,
+        WorkoutSessionEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -28,6 +29,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun gymExerciseDao(): GymExerciseDao
     abstract fun hiitRoutineDao(): HiitRoutineDao
     abstract fun hiitStepDao(): HiitStepDao
+    abstract fun workoutSessionDao(): WorkoutSessionDao
     
     companion object {
         @Volatile
@@ -36,22 +38,23 @@ abstract class AppDatabase : RoomDatabase() {
         // Migration from version 1 to 2: Add HIIT routines support
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                // Create hiit_routines table
+                // ... (existing migration code)
+            }
+        }
+
+        // Migration from version 2 to 3: Add Workout Sessions
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("""
-                    CREATE TABLE IF NOT EXISTS hiit_routines (
+                    CREATE TABLE IF NOT EXISTS workout_sessions (
                         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                        name TEXT NOT NULL
+                        type TEXT NOT NULL,
+                        routineName TEXT NOT NULL,
+                        startTime INTEGER NOT NULL,
+                        endTime INTEGER NOT NULL,
+                        durationSeconds INTEGER NOT NULL
                     )
                 """.trimIndent())
-                
-                // Create default HIIT routine
-                db.execSQL("INSERT INTO hiit_routines (id, name) VALUES (1, 'Cardio HIIT (Default)')")
-                
-                // Add routineId column to hiit_steps (default to 1 for existing data)
-                db.execSQL("ALTER TABLE hiit_steps ADD COLUMN routineId INTEGER NOT NULL DEFAULT 1")
-                
-                // Create index for foreign key
-                db.execSQL("CREATE INDEX IF NOT EXISTS index_hiit_steps_routineId ON hiit_steps(routineId)")
             }
         }
         
@@ -62,7 +65,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "fitsuperapp_database"
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .addCallback(DatabaseCallback())
                     .build()
                 INSTANCE = instance

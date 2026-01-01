@@ -117,4 +117,25 @@ class GymRepository(private val database: AppDatabase) {
             exerciseDao.insertExercises(newExercises)
         }
     }
+
+    // --- SESIONES DE ENTRENAMIENTO ---
+    private val sessionDao = database.workoutSessionDao()
+
+    suspend fun insertSession(type: String, routineName: String, durationSeconds: Long) {
+        val endTime = System.currentTimeMillis()
+        val startTime = endTime - (durationSeconds * 1000)
+        
+        val session = WorkoutSessionEntity(
+            type = type,
+            routineName = routineName,
+            startTime = startTime,
+            endTime = endTime,
+            durationSeconds = durationSeconds
+        )
+        sessionDao.insertSession(session)
+    }
+
+    fun getAllSessionsFlow(): Flow<List<WorkoutSessionEntity>> {
+        return sessionDao.getAllSessions()
+    }
 }

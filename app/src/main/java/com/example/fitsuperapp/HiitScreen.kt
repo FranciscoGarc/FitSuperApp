@@ -23,7 +23,7 @@ fun HiitScreen(
     viewModel: HiitViewModel = viewModel(),
     onExit: () -> Unit
 ) {
-    val timeLeft by viewModel.timeLeft.collectAsState()
+    val timeLeft by viewModel.uiTimeLeft.collectAsState()
     val totalTime by viewModel.totalTime.collectAsState()
     val isPlaying by viewModel.isPlaying.collectAsState()
     val currentStep by viewModel.currentStep.collectAsState()
@@ -47,7 +47,8 @@ fun HiitScreen(
             onPlayPause = { viewModel.togglePlayPause() },
             onAdd10s = { viewModel.add10Seconds() },
             onSkipWarmup = { viewModel.skipWarmup() },
-            onFinish = { viewModel.finishWorkout() } // Botón terminar manual
+            onSkipStep = { viewModel.nextStep() }, // New
+            onFinish = { viewModel.finishWorkout() }
         )
     }
 }
@@ -56,12 +57,13 @@ fun HiitScreen(
 fun WorkoutView(
     currentStep: HiitStep?,
     nextStepName: String,
-    timeLeft: Int,
+    timeLeft: Long,
     totalTime: Int,
     isPlaying: Boolean,
     onPlayPause: () -> Unit,
     onAdd10s: () -> Unit,
     onSkipWarmup: () -> Unit,
+    onSkipStep: () -> Unit, // New
     onFinish: () -> Unit
 ) {
     val stepColor = when (currentStep?.type) {
@@ -76,8 +78,8 @@ fun WorkoutView(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF111827))
-            .statusBarsPadding()
-            .padding(horizontal = 16.dp),
+            // Removed statusBarsPadding to reduce top gap
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -87,7 +89,7 @@ fun WorkoutView(
                 text = nextStepName,
                 color = Color.Gray,
                 fontSize = 16.sp,
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = 4.dp) // Reduced from 16.dp
             )
             Text(
                 text = currentStep?.name ?: "Listo",
@@ -95,13 +97,13 @@ fun WorkoutView(
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 8.dp).height(80.dp) // Altura fija para evitar saltos
+                modifier = Modifier.padding(vertical = 4.dp).height(80.dp)
             )
         }
 
         // --- TEMPORIZADOR ---
         Box(contentAlignment = Alignment.Center, modifier = Modifier.size(300.dp)) {
-            val progress = if (totalTime > 0) timeLeft.toFloat() / totalTime.toFloat() else 0f
+            val progress = if (totalTime > 0) timeLeft.toFloat() / (totalTime * 1000f) else 0f
             Canvas(modifier = Modifier.size(250.dp)) {
                 drawArc(
                     color = Color(0xFF374151),
@@ -119,7 +121,7 @@ fun WorkoutView(
                 )
             }
             Text(
-                text = timeLeft.toString(),
+                text = ((timeLeft + 999) / 1000).toString(),
                 color = stepColor,
                 fontSize = 80.sp,
                 fontWeight = FontWeight.Black
@@ -127,23 +129,14 @@ fun WorkoutView(
         }
 
         // --- CONTROLES ---
-        // Aquí aplicamos navigationBarsPadding para que los botones suban si hay gestos
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .navigationBarsPadding() // <--- MAGIA: Ajuste automático a gestos/botones
+                .navigationBarsPadding()
                 .padding(bottom = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Button(
-                onClick = onAdd10s,
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF374151)),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.fillMaxWidth().height(50.dp)
-            ) {
-                Text("+10 segundos", color = Color(0xFF67e8f9))
-            }
-
+            // Fila de botones principales (Pausar/Reanudar + Siguiente)
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Button(
                     onClick = onPlayPause,
@@ -154,6 +147,28 @@ fun WorkoutView(
                     modifier = Modifier.weight(1f).height(50.dp)
                 ) {
                     Text(if (isPlaying) "Pausar" else "Reanudar", color = Color.White, fontWeight = FontWeight.Bold)
+                }
+
+                // Botón Siguiente (Nuevo)
+                Button(
+                    onClick = onSkipStep, // New callback
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4b5563)),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.width(80.dp).height(50.dp)
+                ) {
+                    Text(">>", color = Color.White, fontWeight = FontWeight.Bold)
+                }
+            }
+            
+            // +10s y Terminar
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Button(
+                    onClick = onAdd10s,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF374151)),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.weight(1f).height(50.dp)
+                ) {
+                    Text("+10s", color = Color(0xFF67e8f9))
                 }
 
                 Button(
@@ -173,7 +188,7 @@ fun WorkoutView(
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.fillMaxWidth().height(50.dp)
                 ) {
-                    Text("Saltar Calentamiento", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text("Saltar Todo Calentamiento", color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
         }

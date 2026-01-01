@@ -44,21 +44,22 @@ fun GymScreen(
         containerColor = Color(0xFF111827), // bg-gray-900
         topBar = {
             // HEADER con Timer y Selectores
+
             Surface(
                 color = Color(0xFF1F2937), // bg-gray-800
                 shadowElevation = 8.dp,
-                modifier = Modifier.statusBarsPadding()
+                modifier = Modifier // Removed statusBarsPadding to avoid double padding
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp)
+                        .padding(top = 0.dp) // Reduced from 8.dp
                 ) {
                     // Barra Superior Centralizada
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .padding(horizontal = 16.dp, vertical = 8.dp) // Reduced vertical from 12.dp
                     ) {
                         // Salir (Izquierda)
                         TextButton(
@@ -226,6 +227,32 @@ fun GymScreen(
                 }
             }
         }
+        }
+    
+        // Dialogo de Felicitaciones
+        val isFinished by viewModel.isWorkoutFinished.collectAsState()
+    if (isFinished) {
+        AlertDialog(
+            onDismissRequest = { viewModel.dismissCompletionModal() },
+            title = { Text(text = "¡Felicidades!") },
+            text = { Text(text = "Has completado todos los ejercicios de hoy. ¡Sigue así!") },
+            confirmButton = {
+                Button(
+                    onClick = { 
+                        viewModel.dismissCompletionModal()
+                        viewModel.finishSession() // Guardar sesión
+                        onExit() 
+                    }
+                ) {
+                    Text("Terminar y Guardar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.dismissCompletionModal() }) {
+                    Text("Seguir Editando")
+                }
+            }
+        )
     }
 }
 
@@ -275,7 +302,7 @@ fun ExerciseCard(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
-                        text = "${exercise.restSeconds}s desc.",
+                        text = "${formatTime(exercise.restSeconds * 1000L)} desc.",
                         color = Color(0xFF34D399),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
@@ -370,9 +397,10 @@ fun SetCheckbox(
     }
 }
 
-// Utilidad para formatear segundos a MM:SS
-fun formatTime(seconds: Int): String {
-    val m = seconds / 60
-    val s = seconds % 60
+// Utilidad para formatear milisegundos a MM:SS
+fun formatTime(millis: Long): String {
+    val totalSeconds = millis / 1000
+    val m = totalSeconds / 60
+    val s = totalSeconds % 60
     return "%02d:%02d".format(m, s)
 }

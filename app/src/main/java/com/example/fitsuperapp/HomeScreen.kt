@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +26,8 @@ import androidx.compose.ui.unit.sp
 fun HomeScreen(
     onNavigateToGym: () -> Unit,
     onNavigateToHiit: () -> Unit,
-    onNavigateToManageData: () -> Unit = {}
+    onNavigateToManageData: () -> Unit = {},
+    onNavigateToProgress: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -80,6 +82,17 @@ fun HomeScreen(
             icon = Icons.Default.Settings,
             gradientColors = listOf(Color(0xFF6366F1), Color(0xFF8B5CF6)), // Purples
             onClick = onNavigateToManageData
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // --- TARJETA PROGRESO ---
+        MenuCard(
+            title = "Mi Progreso",
+            subtitle = "Rachas • Calendario • Estadísticas",
+            icon = Icons.Default.Star, // O DateRange
+            gradientColors = listOf(Color(0xFFF59E0B), Color(0xFFD97706)), // Naranjas/Ámbar
+            onClick = onNavigateToProgress
         )
     }
 }

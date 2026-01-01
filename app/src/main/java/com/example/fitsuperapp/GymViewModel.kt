@@ -1,6 +1,8 @@
 ﻿package com.example.fitsuperapp
 
-import androidx.compose.runtime.mutableStateOf
+import android.app.Application
+import android.content.Intent
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,15 +10,14 @@ import com.example.fitsuperapp.data.AppDatabase
 import com.example.fitsuperapp.data.GymExerciseEntity
 import com.example.fitsuperapp.data.GymRepository
 import com.example.fitsuperapp.data.GymRoutineWithDays
+import com.example.fitsuperapp.data.GymRoutineEntity
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import com.example.fitsuperapp.data.GymRoutineEntity
 
-class GymViewModel(private val repository: GymRepository) : ViewModel() {
+class GymViewModel(application: Application, private val repository: GymRepository) : AndroidViewModel(application) {
 
     // --- ESTADO ---
     private val _currentRoutineId = MutableStateFlow("torso-pierna")
@@ -28,27 +29,25 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
     // Lista de rutinas disponibles
     private val _availableRoutines = MutableStateFlow<List<GymRoutineEntity>>(emptyList())
 
-    // Timer de descanso (FitTrack tiene uno integrado en el header)
-    private val _restTimerSeconds = MutableStateFlow(0)
-    private val _isResting = MutableStateFlow(false)
+    // Timer de descanso (conectado al TimerService)
+    val restTimerSeconds = TimerService.timeLeft
+    val isResting = TimerService.isRunning
     
     // Estado de carga
     private val _isLoading = MutableStateFlow(true)
-
+    val isLoading = _isLoading.asStateFlow()
     val currentRoutineId = _currentRoutineId.asStateFlow()
     val currentDay = _currentDay.asStateFlow()
-    val restTimerSeconds = _restTimerSeconds.asStateFlow()
-    val isResting = _isResting.asStateFlow()
-    val isLoading = _isLoading.asStateFlow()
     val availableRoutines = _availableRoutines.asStateFlow()
 
-    private var timerJob: Job? = null
-    
     // Cache de rutinas cargadas
     private var cachedRoutines: MutableMap<String, GymRoutineWithDays> = mutableMapOf()
     
     // Cache de estados de completion por rutina y día: "routineId_dayIndex" -> Map<exerciseId, List<Boolean>>
     private val completionStateCache = mutableMapOf<String, Map<String, List<Boolean>>>()
+
+    // Sesión
+    private var workoutStartTime: Long? = null
 
     init {
         loadRoutines()
@@ -108,7 +107,6 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
                 sets = entity.sets,
                 baseReps = entity.baseReps,
                 restSeconds = entity.restSeconds
-                // id se genera automáticamente a partir del nombre
             )
         }
         
@@ -133,6 +131,11 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
         _currentDayIndex.value += offset
         loadDay()
         cancelRestTimer() // Cancelar descanso si cambias de día
+        
+        // Iniciar tracking de tiempo si no ha empezado
+        if (workoutStartTime == null) {
+            workoutStartTime = System.currentTimeMillis()
+        }
     }
 
     // Cambiar rutina
@@ -142,16 +145,20 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
             _currentDayIndex.value = 0 // Reiniciar al día 1
             loadDay()
             cancelRestTimer()
+            
+            // Si cambias de rutina, se reinicia el tracker de sesión actual?
+            // De momento asumimos que sí, iniciamos nueva sesión
+            workoutStartTime = System.currentTimeMillis()
         }
-    }
-
-    // Cambiar rutina (Switch Torso/PPL) - Mantenido por compatibilidad si es necesario, pero selectRoutine es preferido
-    fun toggleRoutine(isPPL: Boolean) {
-        selectRoutine(if (isPPL) "ppl" else "torso-pierna")
     }
 
     // Marcar un set como completado
     fun toggleSet(exerciseIndex: Int, setIndex: Int) {
+        // Iniciar tracking de tiempo al primer click
+        if (workoutStartTime == null) {
+            workoutStartTime = System.currentTimeMillis()
+        }
+
         val currentDayData = _currentDay.value ?: return
         val exercise = currentDayData.exercises[exerciseIndex]
         val exerciseId = exercise.id
@@ -182,9 +189,33 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
         val cacheKey = "${_currentRoutineId.value}_${_currentDayIndex.value}"
         completionStateCache[cacheKey] = newCompletionState
 
+        // Check if all exercises in the day are completed (all sets true)
+        checkCompletion(currentDayData.copy(completionState = newCompletionState))
+
         // Si se completó (se marcó true), iniciamos el descanso automáticamente
         if (newSetCompletions[setIndex]) {
             startRestTimer(exercise.restSeconds)
+        } else {
+            // Si desmarcamos, cancelamos el descanso asociado
+             cancelRestTimer()
+        }
+    }
+    
+    // Estado para el modal de completado
+    private val _isWorkoutFinished = MutableStateFlow(false)
+    val isWorkoutFinished = _isWorkoutFinished.asStateFlow()
+    
+    fun dismissCompletionModal() {
+        _isWorkoutFinished.value = false
+    }
+
+    private fun checkCompletion(day: GymDay) {
+        val allCompleted = day.exercises.all { exercise ->
+             val setsState = day.completionState[exercise.id] ?: emptyList()
+             setsState.all { it }
+        }
+        if (allCompleted) {
+            _isWorkoutFinished.value = true
         }
     }
 
@@ -200,6 +231,7 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
         _currentDay.value = currentDayData.copy(
             completionState = resetCompletionState
         )
+        _isWorkoutFinished.value = false // Reset modal status
         
         // También limpiar del cache global
         val cacheKey = "${_currentRoutineId.value}_${_currentDayIndex.value}"
@@ -207,35 +239,46 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
         
         cancelRestTimer() // También cancelamos el timer de descanso
     }
-
-    // Lógica del Timer de Descanso
-    fun startRestTimer(seconds: Int) {
-        timerJob?.cancel()
-        _isResting.value = true
-        _restTimerSeconds.value = seconds
-
-        timerJob = viewModelScope.launch {
-            while (_restTimerSeconds.value > 0) {
-                delay(1000)
-                _restTimerSeconds.value -= 1
+    
+    // Finalizar sesión manualmente
+    fun finishSession() {
+        val start = workoutStartTime
+        if (start != null) {
+            val durationSeconds = (System.currentTimeMillis() - start) / 1000
+            val routineName = _currentDay.value?.title ?: "Entrenamiento Gym"
+            
+            viewModelScope.launch {
+                repository.insertSession("GYM", routineName, durationSeconds)
             }
-            _isResting.value = false
-            // Aquí podrías poner un sonido de "beep" igual que en HIIT
+            workoutStartTime = null
         }
     }
 
+    // Lógica del Timer de Descanso con Service
+    fun startRestTimer(seconds: Int) {
+        val context = getApplication<Application>()
+        val intent = Intent(context, TimerService::class.java).apply {
+            action = TimerService.ACTION_START_TIMER
+            putExtra(TimerService.EXTRA_DURATION, seconds * 1000L)
+            putExtra(TimerService.EXTRA_TITLE, "Descanso")
+        }
+        context.startService(intent) // startService promueve a foreground internamente en el servicio
+    }
+
     fun cancelRestTimer() {
-        timerJob?.cancel()
-        _isResting.value = false
-        _restTimerSeconds.value = 0
+        val context = getApplication<Application>()
+        val intent = Intent(context, TimerService::class.java).apply {
+            action = TimerService.ACTION_STOP_TIMER
+        }
+        context.startService(intent)
     }
     
     // Factory para crear el ViewModel con dependencias
-    class Factory(private val database: AppDatabase) : ViewModelProvider.Factory {
+    class Factory(private val application: Application, private val database: AppDatabase) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(GymViewModel::class.java)) {
-                return GymViewModel(GymRepository(database)) as T
+                return GymViewModel(application, GymRepository(database)) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
